@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">Stock Market</string>
+    <string name="stock_market_search"> Stock Market Search</string>
+    <string name="get_quote"> Get Quote </string>
+    <string name="clear">Clear</string>
+    <string name="favorites">Favorites</string>
+    <string name="automatic_refresh"> AutoRefresh</string>
+    <string name="order_by">Order</string>
+    <string name="sort">Sort by</string>
+    <string name="symbol">Symbol</string>
+    <string name="price">Price</string>
+    <string name="volume">Volume</string>
+    <string name="current">CURRENT</string>
+    <string name="historical">HISTORICAL</string>
+    <string name="news">NEWS</string>
+    <string name="stock_details">Stock Details</string>
+    <string name="indicators">Indicators</string>
+    <string name="change">Change</string>
+    <string name="facebook_app_id">808423916007314</string>
+    <string name="cant_favorite">Unable to fetch data</string>
+
+    <string-array name="sort_items">
+        <item>@string/sort</item>
+        <item>@string/symbol</item>
+        <item>@string/price</item>
+        <item>@string/change</item>
+    </string-array>
+
+    <string-array name="order_items">
+        <item>@string/order_by</item>
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+
+    <string-array name="indicator_items">
+        <item>Price</item>
+        <item>SMA</item>
+        <item>EMA</item>
+        <item>STOCH</item>
+        <item>RSI</item>
+        <item>ADX</item>
+        <item>CCI</item>
+        <item>BBANDS</item>
+        <item>MACD</item>
+
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="validation_msg">Please enter a stock name or symbol</string>
+    <string name="failed_to_load">Failed to load data.</string>
+    <string name="failed_to_load_news">Failed to load news data.</string>
+</resources>

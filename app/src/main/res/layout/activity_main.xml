@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        tools:context=".views.activity.MainActivity">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:fontFamily="sans-serif"
+            android:text="@string/stock_market_search"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/large_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <AutoCompleteTextView
+            android:id="@+id/stock_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginLeft="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginTop="@dimen/xlarge_margin"
+            android:completionThreshold="1"
+            android:gravity="center"
+            android:nextFocusLeft="@id/stock_name"
+            android:nextFocusUp="@id/stock_name"
+            android:theme="@style/Autocomplete"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <TextView
+            android:id="@+id/quote_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:fontFamily="sans-serif"
+            android:text="@string/get_quote"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/btn_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/clear_btn"
+            app:layout_constraintTop_toBottomOf="@+id/stock_name" />
+
+        <TextView
+            android:id="@+id/clear_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="@string/clear"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/btn_text"
+            app:layout_constraintLeft_toRightOf="@+id/quote_btn"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/quote_btn" />
+
+
+        <TextView
+            android:id="@+id/favorites"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:fontFamily="sans-serif"
+            android:gravity="bottom"
+            android:text="@string/favorites"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/semi_large_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/clear_btn" />
+
+        <LinearLayout
+            android:id="@+id/favorites_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginRight="@dimen/small_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/favorites">
+
+            <TextView
+                android:id="@+id/refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="bottom"
+                android:text="@string/automatic_refresh"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/small_text" />
+
+            <Switch
+                android:id="@+id/auto_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp" />
+
+            <ImageView
+                android:id="@+id/refresh_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_rotate" />
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/sort_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:overlapAnchor="false"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/favorites_layout" />
+
+        <Spinner
+            android:id="@+id/order_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:overlapAnchor="false"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/sort_spinner" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/favorites_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sort_spinner">
+        </android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:id="@+id/fav_progress_bar"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="@id/favorites_list"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/small_margin"
+            android:visibility="invisible"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.1"
+            tools:layout_editor_absoluteX="39dp"
+            tools:layout_editor_absoluteY="81dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2"
+            tools:layout_editor_absoluteX="77dp"
+            tools:layout_editor_absoluteY="81dp" />
+    </android.support.constraint.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+</FrameLayout>

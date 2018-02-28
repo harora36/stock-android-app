@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="indicator_height">3dp</dimen>
+
+    <dimen name="list_side_img_width">25dp</dimen>
+    <dimen name="list_side_img_height">25dp</dimen>
+
+    <dimen name="card_radius">4dp</dimen>
+    <dimen name="topic_row_max_height">100dp</dimen>
+
+    <dimen name="large_text">25sp</dimen>
+    <dimen name="semi_large_text">22sp</dimen>
+    <dimen name="normal_text">20sp</dimen>
+    <dimen name="semi_normal_text">18sp</dimen>
+    <dimen name="btn_text">25sp</dimen>
+    <dimen name="small_text">15sp</dimen>
+    <dimen name="xsmall_text">12sp</dimen>
+
+    <dimen name="xlarge_margin">40dp</dimen>
+    <dimen name="large_margin">20dp</dimen>
+    <dimen name="normal_margin">15dp</dimen>
+    <dimen name="xnormal_margin">12dp</dimen>
+    <dimen name="small_margin">10dp</dimen>
+    <dimen name="xsmall_margin">7dp</dimen>
+</resources>

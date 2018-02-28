@@ -1,0 +1,129 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/normal_margin"
+        tools:context=".views.fragments.CurrentFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:fontFamily="sans-serif"
+                android:text="@string/stock_details"
+                android:textColor="@color/black"
+                android:textSize="@dimen/large_text" />
+
+            <ImageView
+                android:id="@+id/fb_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toLeftOf="@+id/star_icon"
+                android:src="@drawable/fb_icon" />
+
+
+            <ImageView
+                android:id="@+id/star_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/small_margin"
+                android:src="@drawable/star" />
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                layout="@layout/stock_detail_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <include
+                layout="@layout/error_msg_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/xnormal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.25"
+                android:text="@string/indicators"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal_text"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/indicator_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:overlapAnchor="false" />
+
+            <TextView
+                android:id="@+id/change_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/change"
+                android:textAlignment="center"
+                android:textColor="@drawable/nav_item_bg_selector"
+                android:textSize="@dimen/semi_normal_text" />
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/large_margin">
+
+            <WebView
+                android:id="@+id/webview"
+                android:layout_width="match_parent"
+                android:background="@color/midDarkGray"
+                android:layout_height="wrap_content"></WebView>
+
+            <include
+                android:id="@+id/progress_bar2"
+                layout="@layout/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <include
+                android:id="@+id/indicator_error"
+                layout="@layout/error_msg_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+    </LinearLayout>
+
+
+</ScrollView>

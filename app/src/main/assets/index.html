@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+</head>
+
+<body>
+<div id="container"></div>
+</body>
+<script type="text/javascript">
+  chartView.setShowLoading(true);
+  var url = 'http://webassignment-env.us-east-2.elasticbeanstalk.com/api/stock/' + chartView.getStockSymbol() + '/price';
+  $.getJSON(url, function(data) {
+    // Create the chart
+    var error_msg = data["error"];
+    if (error_msg != null || error_msg != undefined) {
+      chartView.showError();
+      return;
+    }
+    var error_msg = data["Error Message"];
+    if (error_msg != null || error_msg != undefined) {
+      chartView.showError();
+      return;
+    }
+    var chart = Highcharts.stockChart('container', {
+      title: {
+        text: chartView.getStockSymbol() + " Stock Value",
+        style: {
+          fontSize: "20px"
+        }
+      },
+
+      subtitle: {
+        text: '<a style="color:blue;" href=\"https://www.alphavantage.co/\">Source: Alpha Vantage </a>',
+        style: {
+          fontSize: "15px"
+        }
+      },
+
+      yAxis: {
+        title: {
+          text: 'Stock Value',
+          style: {
+            color: '#9c9c9c'
+          }
+        }
+      },
+
+      rangeSelector: {
+        selected: 4,
+        buttons: [{
+              type: 'millisecond',
+             count: 2592000000,
+             text: '1m'
+        }, {
+          type: 'month',
+          count: 3,
+          text: '3m'
+        }, {
+          type: 'month',
+          count: 6,
+          text: '6m'
+        }, {
+          type: 'year',
+          count: 1,
+          text: '1y'
+        }, {
+          type: 'all',
+          text: 'All'
+        }]
+      },
+
+      series: [{
+        name: chartView.getStockSymbol(),
+        data: data,
+        type: 'area',
+        threshold: null,
+        tooltip: {
+          valueDecimals: 2
+        }
+      }],
+    });
+    chartView.setShowLoading(false);
+  }).fail(function(d) {
+    chartView.showError();
+  });
+</script>
+
+</html>

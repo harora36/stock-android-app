@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+</head>
+
+<body>
+<div id="container"></div>
+</body>
+<script type="text/javascript">
+  function getTodaysDate() {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd
+    }
+    if (mm < 10) {
+      mm = '0' + mm
+    }
+    today = mm + '/' + dd + '/' + yyyy;
+    return today;
+  }
+
+  function monthDiff(d1, d2) {
+    var months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth() + 1;
+    months += d2.getMonth();
+    return months <= 0 ? 0 : months;
+  }
+
+  function getSeriesOptions(data, isPrice, stockName) {
+    var seriesOptions = new Array();
+    var namearray = new Array();
+    var keys = Object.keys(data)
+    var firstObject = data[keys[0]];
+    if (isPrice) {
+      namearray.push('4. close');
+      namearray.push('5. volume');
+    } else {
+      Array.prototype.push.apply(namearray, Object.keys(firstObject));
+    }
+    var dataarray = new Array();
+    for (var j = 0; j < namearray.length; j++) {
+      dataarray[j] = new Array();
+    }
+    for (var i = 0; i < keys.length; i++) {
+      var today = new Date();
+      if (monthDiff(new Date(keys[i]), today) >= 6) {
+
+        break;
+      }
+      for (var j = 0; j < namearray.length; j++) {
+        var value = parseFloat(data[keys[i]][namearray[j]]);
+        dataarray[j].push([Date.parse(keys[i]), value]);
+      }
+    }
+    for (var j = 0; j < dataarray.length; j++) {
+      dataarray[j].sort(function(a, b) {
+        return new Date(a[0]) - new Date(b[0]);
+      });
+    }
+    stockName = stockName.toUpperCase();
+    for (var j = 0; j < namearray.length; j++) {
+      if (isPrice) {
+        if (namearray[j] == '4. close') {
+          seriesOptions.push({
+            name: 'Price',
+            data: dataarray[j],
+            type: 'area',
+            yAxis: j,
+            color: '#6368FB',
+            connectNulls: true,
+            fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
+            pointStart: dataarray[j][0][0],
+            startOnTick: true,
+            endOnTick: false
+          });
+        } else {
+          seriesOptions.push({
+            name:'Volume',
+            data: dataarray[j],
+            connectNulls: true,
+            color: '#FC1721',
+            type: 'column',
+            yAxis: j,
+            pointWidth: 2,
+            pointPadding: 0.6,
+            startOnTick: true,
+            endOnTick: false
+          });
+        }
+      } else {
+        seriesOptions.push({
+          name: stockName + " " + namearray[j],
+          data: dataarray[j],
+          type: 'line',
+          pointStart: dataarray[j][0][0],
+          startOnTick: true,
+          endOnTick: false
+        });
+      }
+    }
+    return seriesOptions;
+  }
+
+  function getYAxis(isPrice, ylabel) {
+    if (!isPrice) {
+      return [{
+        title: {
+          text: ylabel
+        },
+        labels: {
+          color: '#000'
+        },
+        tickColor: '#000'
+      }];
+    }
+    return priceVolumeYAxis();
+  }
+
+
+  function priceVolumeYAxis() {
+    var yAxis = [{
+      title: {
+        text: 'Stock Price',
+        style: {
+          color: Highcharts.getOptions().colors[1]
+        }
+      },
+      tickColor: '#000',
+      labels: {
+        format: '{value}',
+        color: '#000',
+        style: {
+          color: Highcharts.getOptions().colors[1]
+        }
+      }
+    }, {
+      gridLineWidth: 0,
+      title: {
+        text: 'Volume',
+        style: {
+          color: Highcharts.getOptions().colors[1]
+        }
+      },
+      labels: {
+        formatter: function() {
+          return this.value / 1000000 + "M";
+
+        },
+        style: {
+          color: Highcharts.getOptions().colors[1]
+        }
+      },
+      tickColor: '#000',
+      opposite: true
+    }];
+    return yAxis;
+  }
+
+  function downloadChart() {
+    var obj = {},
+        chart;
+
+    chart = $('#container').highcharts();
+    obj.svg = chart.getSVG();
+    obj.type = 'image/png';
+    obj.width = 450;
+    obj.async = true;
+
+
+    $.ajax({
+        type: 'post',
+        url: chart.options.exporting.url,
+        data: obj,
+        success: function (data) {
+            var exportUrl = this.url;
+            chartView.shareOnFacebook(exportUrl + data);
+        }
+    });
+   }
+
+  function getChartOptions(isPrice, title, ylabel, data, stockName) {
+    return {
+      chart: {
+        type: 'line',
+        alignTicks: true,
+        color: '#000'
+      },
+      exporting: {
+        url: 'http://export.highcharts.com/',
+        enabled: false
+
+      },
+      title: {
+        text: title
+      },
+      subtitle: {
+        text: '<a style="color:blue;" href=\"https://www.alphavantage.co/\">Source: Alpha Vantage </a>'
+      },
+      legend: {
+        align: 'center',
+        verticalAlign: 'bottom'
+      },
+      xAxis: {
+        type: 'datetime',
+        tickInterval: 24 * 3600 * 1000 * 7,
+        ordinal: false,
+        tickColor: '#000',
+        minPadding: 0,
+        maxPadding: 0,
+        startOnTick: true,
+        endOnTick: false,
+        labels: {
+          color: '#000',
+          formatter: function() {
+            return Highcharts.dateFormat('%m-%d', this.value);
+          }
+        }
+      },
+      yAxis: getYAxis(isPrice, ylabel),
+      tooltip: {
+        shared: true,
+        valueDecimals: 2
+      },
+      plotOptions: {
+        column: {
+          pointRange: (24 * 3600 * 1000 * 7) / 5,
+          pointPadding: 0.2
+        },
+        line: {
+          pointRange: (24 * 3600 * 1000 * 7) / 5,
+          borderWidth: 0,
+          connectNulls: true
+        }
+      },
+      series: getSeriesOptions(data, isPrice, stockName)
+    };
+  }
+
+
+  chartView.setShowLoading(true);
+  var stockName = chartView.getStockSymbol();
+  var indicator = chartView.getIndicator();
+  var url = 'http://webassignment-env.us-east-2.elasticbeanstalk.com/api/stock/' + stockName + '/indicator/' + indicator;
+  $.getJSON(url, function(response) {
+     var error_msg = response["error"];
+    if (error_msg != null || error_msg != undefined) {
+      chartView.showIndicatorError();
+      return;
+    }
+    var error_msg = response["Error Message"];
+    if (error_msg != null || error_msg != undefined) {
+      chartView.showIndicatorError();
+      return;
+    }
+    var isPrice = true;
+    if (indicator != null && indicator.toLowerCase() != 'price') {
+      isPrice = false;
+    }
+    if (isPrice) {
+      var title = stockName + ' Stock Price' + ' (' + getTodaysDate() + ')';
+      var options = getChartOptions(true, title, '', response, stockName);
+      Highcharts.chart('container', options);
+    } else {
+      var title = response["Meta Data"]["2: Indicator"];
+      var key = Object.keys(response)[1];
+      var ylabel = key.substring(key.indexOf(":") + 1);
+      var options = getChartOptions(isPrice, title, ylabel, response[key], stockName);
+      Highcharts.chart('container', options);
+    }
+    chartView.setShowLoading(false);
+  }).fail(function(d) {
+    chartView.showIndicatorError();
+  });
+</script>
+
+</html>
